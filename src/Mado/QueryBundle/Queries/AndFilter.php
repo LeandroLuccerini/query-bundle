@@ -34,11 +34,15 @@ class AndFilter
     public function createFilter(array $andFilters)
     {
         foreach ($andFilters as $filter => $value) {
-            $this->applyFilter(
-                Objects\FilterObject::fromRawFilter($filter),
-                $value,
-                Objects\Value::fromFilter($value)
-            );
+            if (!is_array($value)) {
+                $this->applyFilter(
+                    Objects\FilterObject::fromRawFilter($filter),
+                    $value,
+                    Objects\Value::fromFilter($value)
+                );
+            } else {
+                $this->createFilter($value);
+            }
         }
     }
 

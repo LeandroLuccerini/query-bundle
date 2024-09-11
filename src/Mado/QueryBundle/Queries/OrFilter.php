@@ -36,10 +36,14 @@ class OrFilter
     public function createFilter(array $orFilters)
     {
         foreach ($orFilters as $filter => $value) {
-            $this->applyFilter(
-                Objects\FilterObject::fromRawFilter($filter),
-                $value
-            );
+            if (!is_array($value)) {
+                $this->applyFilter(
+                    Objects\FilterObject::fromRawFilter($filter),
+                    $value
+                );
+            } else {
+                $this->createFilter($value);
+            }
         }
     }
 
